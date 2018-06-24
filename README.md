@@ -1,5 +1,5 @@
 # Crypto-Kickstarter
-This is a smart contract system used to run a simple kickstarter campaign over a blockchain. The difference between a "crypto kickstarter" and an ICO is vast. The Crypto Kickstarter is used to primarily validate addresses so that a hardware product can be delivered to said address, and any additional blockchain features received by the donator are considered not to be a part of the purchase. It represents a legal obligation for a hardware product to be delivered to the end user. 
+This is a smart contract system used to run a simple kickstarter campaign over a blockchain. The difference between a "crypto kickstarter" and an ICO is vast. The Crypto Kickstarter is used to primarily validate real-world addresses so that a hardware product can be delivered to said address, and any additional blockchain features received by the donator are considered not to be a part of the purchase. It represents a legal obligation for a hardware product to be delivered to the end user. In this context, "address" is not an ethereum address, but a traditional real-world address (street name, city, zip code, etc).
 
 It is possible to expand this repo to develop a more "proof-of-individual" kickstarter, limiting hardware deliveries based on a zip code, name, or particular address. This would ensure that a small number of investors do not receive an unfair amount of blockchain features, which would effectively corrupt a blockchain system that would otherwise have proof-of-individual potential.
 
@@ -19,7 +19,7 @@ Some things to consider:
 * Thus, there are really two tokens being born here: Karma (more of a score than a token), and OBL. 
 
 ## HTML page
-A simple HTML page is included which validates address data and creates a JSON structure for input into a myetherwallet.com transaction as the "additional data" field. It ensures that the address data put into the form will be accepted by the smart contract. In this context, "address" is not an ethereum address, but a traditional real-world address (street name, city, zip code, etc).
+A simple HTML page is included which validates address data and creates a JSON structure for input into a myetherwallet.com transaction as the "additional data" field. It ensures that the address data put into the form will be accepted by the smart contract. 
 
 ## Proof-of-address ???
 Yea... Nothing is ever 100% secure, but it would be really hard for someone to "fake-generate" multiple valid addresses and receive multiple vybuds packages there. Not all security can be as secure as encryption, this is meant to make things difficult AND public in the event someone does try to abuse the setup.
