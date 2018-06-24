@@ -1,7 +1,7 @@
 # Crypto-Kickstarter
 This is a smart contract system used to run a simple kickstarter campaign over a blockchain. The difference between a "crypto kickstarter" and an ICO is vast. The Crypto Kickstarter is used to primarily validate real-world addresses so that a hardware product can be delivered to said address, and any additional blockchain features received by the donator are considered not to be a part of the purchase. It represents a legal obligation for a hardware product to be delivered to the end user. In this context, "address" is not an ethereum address, but a traditional real-world address (street name, city, zip code, etc).
 
-It is possible to expand this repo to develop a more "proof-of-individual" kickstarter, limiting hardware deliveries based on a zip code, name, or particular address. This would ensure that a small number of investors do not receive an unfair amount of blockchain features, which would effectively corrupt a blockchain system that would otherwise have proof-of-individual potential.
+It is possible to expand this repo to develop a more "proof-of-individual" kickstarter, limiting hardware deliveries based on a zip code, name, or particular address. This would ensure that a small number of investors do not receive an unfair amount of blockchain features (i.e. vybuds or maybe even tokens), which would effectively corrupt a blockchain system that would otherwise have proof-of-individual potential.
 
 The repo consists of two main elements: The smart contract, and the web page (an example one, anyway).
 ## Smart Contract
