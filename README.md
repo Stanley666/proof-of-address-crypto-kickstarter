@@ -18,3 +18,6 @@ Some things to consider:
 
 ## HTML page
 A simple HTML page is included which validates address data and creates a JSON structure for input into a myetherwallet.com transaction as the "additional data" field. It ensures that the address data put into the form will be accepted by the smart contract. In this context, "address" is not an ethereum address, but a traditional real-world address (street name, city, zip code, etc).
+
+## Proof-of-address ???
+Yea... Nothing is ever 100% secure, but it would be really hard for someone to "fake-generate" multiple valid addresses and receive multiple vybuds packages there. Not all security can be as secure as encryption, this is meant to make things difficult AND public in the event someone does try to abuse the setup.
