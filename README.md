@@ -1,5 +1,5 @@
 # Crypto-Kickstarter
-This is a smart contract system used to run a simple kickstarter campaign over a blockchain. The difference between a "crypto kickstarter" and an ICO is vast. The Crypto Kickstarter is used to primarily validate addresses so that a hardware product to said address, and an additional blockchain features received by the donator are considered not to be a part of the purchase. It represents a legal obligation for a hardware product to be delivered to the end user. 
+This is a smart contract system used to run a simple kickstarter campaign over a blockchain. The difference between a "crypto kickstarter" and an ICO is vast. The Crypto Kickstarter is used to primarily validate addresses so that a hardware product can be delivered to said address, and any additional blockchain features received by the donator are considered not to be a part of the purchase. It represents a legal obligation for a hardware product to be delivered to the end user. 
 
 It is possible to expand this repo to develop a more "proof-of-individual" kickstarter, limiting hardware deliveries based on a zip code, name, or particular address. This would ensure that a small number of investors do not receive an unfair amount of blockchain features, which would effectively corrupt a blockchain system that would otherwise have proof-of-individual potential.
 
@@ -9,6 +9,8 @@ The smart contract collects ETH and distribute OBLs in increments of 0.1 ETH. Th
 * 	A donation of 0.10 ETH returns 20 OBL and 1 Vybuds (1 Karma)
 * 	A donation of 0.19 ETH returns 20 OBL and 1 Vybuds (1 Karma)
 * 	A donation of 0.20 ETH returns 40 OBL and 2 Vybuds (2 Karma)
+
+OBLs are tokens used on the Project Oblio experiment smart contracts. Karma are just a record to be used in a sort-of proof-of-individual system, if we can ever develop one (we think we can).
 
 Some things to consider:
 * Making donator's addresses public is useful if we want to prevent someone from hoarding a large number of vybuds, and using them to attack the network early on with fake data. The maximum number of vybuds that a single person can order in our kickstarter has not yet been determined.
