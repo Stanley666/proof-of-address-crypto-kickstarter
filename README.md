@@ -10,12 +10,12 @@ The smart contract collects ETH and distribute OBLs in increments of 0.1 ETH. Th
 * 	A donation of 0.19 ETH returns 20 OBL and 1 Vybuds (1 Karma)
 * 	A donation of 0.20 ETH returns 40 OBL and 2 Vybuds (2 Karma)
 
-OBLs are tokens used on the [Project Oblio experiment smart contracts](https://github.com/project-oblio/decentralized-neuroscience-smart-contracts). Karma are just a record to be used in a sort-of proof-of-individual system, if we can ever develop one (we think we can). Karma can be used to [create fractional voting power](https://medium.com/@FEhrsam/blockchain-governance-programming-our-future-c3bfe30f2d74) based on how trusted an identity is.
+OBLs are tokens used on the [Project Oblio experiment smart contracts](https://github.com/project-oblio/decentralized-neuroscience-smart-contracts). Karma are just a record to be used in a sort-of proof-of-individual system, if we can ever develop one (we think we can). Karma can be used to [create fractional voting power](https://medium.com/@FEhrsam/blockchain-governance-programming-our-future-c3bfe30f2d74) based on how trusted an identity is. To be clear, karma is not at all synonymous with "number of vybuds owned", except in the case of this initial kickstarter.
 
 Some things to consider:
 * Making donator's addresses public is useful if we want to prevent someone from hoarding a large number of vybuds, and using them to attack the network early on with fake data. The maximum number of vybuds that a single person can order in our kickstarter has not yet been determined.
 * A donator who wanted to remain anonymous could donate ETH, provide a fake address, and receive only OBL. In this case, Vybuds would validate said address in a centralized way and choose not to deliver to it. So, the investor only games the system by collecting a bunch of OBL, but not vybuds. A future blog post will describe why this wouldn't be advantegous for the investor, but we can't make this clear quite yet. 
-* This is different from an ICO because a separate log is kept on a per-vybuds basis. The number of vybuds can be limited, effectively preventing one person from hoarding too much of a particular kind of wealth ("Karma"; Vybuds hardware). Also, karma is not at all synonymous with "number of vybuds owned", except in the case of this initial kickstarter.
+* This is different from an ICO because a separate log is kept on a per-vybuds basis. The number of vybuds can be limited, effectively preventing one person from hoarding too much of a particular kind of wealth ("Karma"; Vybuds hardware). 
 * Thus, there are really two tokens being born here: Karma (more of a score than a token), and OBL. 
 
 ## HTML page
