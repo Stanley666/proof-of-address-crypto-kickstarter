@@ -14,7 +14,7 @@ OBLs are tokens used on the [Project Oblio experiment smart contracts](https://g
 
 Some things to consider:
 * Making donator's addresses public is useful if we want to prevent someone from hoarding a large number of vybuds, and using them to attack the network early on with fake data. The maximum number of vybuds that a single person can order in our kickstarter has not yet been determined.
-* A donator who wanted to remain anonymous could donate ETH, provide a fake address, and receive only OBL. In this case, Vybuds would validate said address in a centralized way and choose not to deliver to it. So, the investor only games the system by collecting a bunch of OBL, but not vybuds. A future blog post will describe why this wouldn't be advantegous for the investor, but we can't make this clear quite yet. 
+* A donator who wanted to remain anonymous could donate ETH, provide a fake address, and receive only OBL. In this case, Vybuds would validate said address in a centralized way and choose not to deliver to it. So, the investor only games the system by collecting a bunch of OBL, but not vybuds. A future blog post will describe why this wouldn't be advantegous for the investor. 
 * This is different from an ICO because a separate log is kept on a per-vybuds basis. The number of vybuds can be limited, effectively preventing one person from hoarding too much of a particular kind of wealth ("Karma"; Vybuds hardware). 
 * Thus, there are really two tokens being born here: Karma (more of a score than a token), and OBL. 
 
