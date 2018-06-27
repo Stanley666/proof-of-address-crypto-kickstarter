@@ -1,68 +1,86 @@
 pragma solidity ^0.4.22;
 
 import "./SafeMath.sol";
+import "./SafeERC20.sol";
 
-/**
- * @title ERC20Basic
- * @dev Simpler version of ERC20 interface
- * See https://github.com/ethereum/EIPs/issues/179
- */
-contract ERC20Basic {
-  function totalSupply() public view returns (uint256);
-  function balanceOf(address who) public view returns (uint256);
-  function transfer(address to, uint256 value) public returns (bool);
-  event Transfer(address indexed from, address indexed to, uint256 value);
-}
+contract Crowdsale {
+  using SafeMath for uint256;
+  using SafeERC20 for ERC20;
 
-/**
- * @title ERC20 interface
- * @dev see https://github.com/ethereum/EIPs/issues/20
- */
-contract ERC20 is ERC20Basic {
-    
-  function allowance(address owner, address spender)
-    public view returns (uint256);
+  // The token being sold
+  ERC20 public token;
 
-  function transferFrom(address from, address to, uint256 value)
-    public returns (bool);
+  // Address where funds are collected
+  address public wallet;
 
-  function approve(address spender, uint256 value) public returns (bool);
-  event Approval(
-    address indexed owner,
-    address indexed spender,
-    uint256 value
+  uint256 public rate;
+
+  // Amount of wei raised
+  uint256 public weiRaised;
+
+  event TokenPurchase(
+    address indexed purchaser,
+    address indexed beneficiary,
+    uint256 value,
+    uint256 amount
   );
+
+  constructor(uint256 _rate, address _wallet, ERC20 _token) public {
+    require(_rate > 0);
+    require(_wallet != address(0));
+    require(_token != address(0));
+
+    rate = _rate;
+    wallet = _wallet;
+    token = _token;
+  }
+
+  // -----------------------------------------
+  // Crowdsale external interface
+  // -----------------------------------------
+
+  function _preValidatePurchase( address _beneficiary, uint256 _weiAmount ) internal {
+    require(_beneficiary != address(0));
+    require(_weiAmount != 0);
+  }
+
+  function _postValidatePurchase(address _beneficiary, uint256 _weiAmount) internal {
+    // optional override
+  }
+
+  function _deliverTokens(address _beneficiary, uint256 _tokenAmount) internal {
+    token.safeTransfer(_beneficiary, _tokenAmount);
+  }
+
+  function _processPurchase(address _beneficiary, uint256 _tokenAmount ) internal {
+    _deliverTokens(_beneficiary, _tokenAmount);
+  }
+
+  function _getTokenAmount(uint256 _weiAmount) internal view returns (uint256) {
+    return _weiAmount.mul(rate);
+  }
+
+  function _forwardFunds() internal {
+    wallet.transfer(msg.value);
+  }
+
 }
 
-contract ProjectOblioCrowdsale {
-    
+contract ProjectOblioCrowdsale is Crowdsale {
+
     using SafeMath for uint256;
+
+    uint256 public openingTime;
+    uint256 public closingTime;    
     
-    uint256 public min_donation = 200;
-    
-    uint256 public karma_rate = 1;
-    
-    ERC20 public token; // The token being sold
-    
-    address public wallet; // Address where funds are collected
-    
-    uint256 public weiRaised; // Amount of wei raised
-    
-    uint256 public currentRound; //current round total
-    
-    uint startTime = now; //block-time when it was deployed
+    uint256 public MIN_DONATION = 100000000000000000;
+    uint256 public KARMA_RATE = 1;
     
     uint256 public completedAt; //Time Crowdsale completed
-    
     address[] public accountList;
     
     struct Account {
-        // string name;
-        // string email;
-        // string str_address;
-        // string str_number;
-        // uint zipcode;
-        // bool terms;
+        uint256 karma_rate;
         bool isEntity;
         bytes data;
     }
@@ -70,32 +88,75 @@ contract ProjectOblioCrowdsale {
     mapping(address => Account) AccountStruts;
     
     //Events
-    event AccountCreated(address _beneficiary);
-    event AccountCreatedBuy(address sender, bytes data);
+    event AccountCreated(address _beneficiary, bytes _data, uint256 karma_rate);
     
-    constructor() public {}
-    
-    
+    constructor(uint256 _rate, address _wallet, ERC20 _token, uint256 _openingTime, uint256 _closingTime) public 
+        Crowdsale(_rate, _wallet, _token) {
+
+        require(_openingTime >= block.timestamp);
+        require(_closingTime >= _openingTime);
+
+        openingTime = _openingTime;
+        closingTime = _closingTime;
+    }
+
     // -----------------------------------------
-    // Crowdsale external interface
+    // TimeCrowdsale external interface
+    // -----------------------------------------
+
+    /**
+    * @dev Reverts if not in crowdsale time range.
+    */
+    modifier onlyWhileOpen {
+        require(block.timestamp >= openingTime && block.timestamp <= closingTime);
+        _;
+    }
+
+    function hasClosed() public view returns (bool) {
+        return block.timestamp > closingTime;
+    }
+
+    // -----------------------------------------
+    // Project Oblio external interface
     // -----------------------------------------
     
     /**
     * @dev fallback function ***DO NOT OVERRIDE***
     */
     function () external payable {
-        // buyTokens(msg.sender);
-        createAccount(msg.sender, msg.data);
+        buyTokens(msg.sender);
     }
+
+    function buyTokens(address _beneficiary) public payable {
+
+        uint256 weiAmount = msg.value;
+        require(weiAmount > MIN_DONATION);
+        _preValidatePurchase(_beneficiary, weiAmount);
+
+        // calculate token amount to be created
+        uint256 tokens = _getTokenAmount(weiAmount);
+
+        // update state
+        weiRaised = weiRaised.add(weiAmount);
+
+        //_processPurchase(_beneficiary, tokens);
+        emit TokenPurchase(msg.sender, _beneficiary, weiAmount, tokens);
+
+        createAccount(msg.sender, 1, msg.data);
+        _forwardFunds();
+
+        _postValidatePurchase(_beneficiary, weiAmount);
+    }    
         
-    function createAccount(address ownerAddress, bytes data) public payable {
+    function createAccount(address ownerAddress, uint256 karma, bytes data) public payable {
         require( ! AccountStruts[ownerAddress].isEntity, "Address exist already");
         
         AccountStruts[ownerAddress].isEntity = true;
+        AccountStruts[ownerAddress].karma_rate = karma;
         AccountStruts[ownerAddress].data = data;
         
         accountList.push(ownerAddress);
-        emit AccountCreated(ownerAddress);
+        emit AccountCreated(ownerAddress, data, karma);
     }    
     
     function getAccount(address _beneficiary) public constant returns (bool isEntity, bytes data){
@@ -107,5 +168,9 @@ contract ProjectOblioCrowdsale {
     function GetAccountCount() public constant returns (uint) {
         return accountList.length;
     }
+
+  function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) internal onlyWhileOpen {
+    super._preValidatePurchase(_beneficiary, _weiAmount);
+  }    
    
 }

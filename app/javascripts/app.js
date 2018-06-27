@@ -72,14 +72,13 @@ window.App = {
         // Added as a special "additional data" field in myetherwallet's send a transaction
         transactionObject.data = web3.utils.toHex('234');
         transactionObject.value = depositInWei;
-        console.log(contract_address);
 
         web3.eth.sendTransaction(transactionObject, {from: account})
                 .on('transactionHash', function(hash){
                     console.log(hash);
                 })
                 .on('confirmation', function(confirmationNumber, receipt){
-                    if(confirmationNumber == 24){
+                    if(confirmationNumber == 15){
                         App.refreshBalance();
                     }
                     // console.log(confirmationNumber, receipt);
@@ -112,14 +111,28 @@ window.App = {
             
             var balance_element = document.getElementById("accountCount");
             var wallet_address = document.getElementById("current_wallet");
+            var cca = document.getElementById("crowdsale_contract_address");
 
             balance_element.innerHTML = value.valueOf()+" Members";
             wallet_address.innerHTML = account;
+            cca.innerHTML = tokenInstance.address;
 
         }).catch(function(e) {
             console.log(e);
             App.setStatus("Error getting Get Account Count; see log.");
-        });        
+        });
+
+        let obl_token_instance;
+        TokenContract.deployed().then(function(instance){
+            obl_token_instance = instance;
+            return obl_token_instance.balanceOf.call(account);
+        }).then(function(balance){
+            var obl_token = document.getElementById("obl_token");
+            obl_token.innerHTML = balance.toFixed(2);
+        }).catch(function(e){
+            console.log(e);
+            App.setStatus("Error getting Get Account Count; see log.");
+        });
     },
 
     printImportantInfo: function(){
@@ -141,7 +154,36 @@ window.App = {
         });
     },
 
-    watchEvents: function(){}
+    watchEvents: function(){
+        var tokenInstance;
+        ProjectOblioCrowdsale.deployed().then(function(instance){
+            tokenInstance = instance;
+            tokenInstance.allEvents({}, {fromBlock:0, toBlock:'latest'}).watch(function(error, result){
+                var alertbox = document.createElement("div");
+                alertbox.setAttribute("class", "alert alert-info  alert-dismissible");
+                var closeBtn = document.createElement("button");
+                closeBtn.setAttribute("type", "button");
+                closeBtn.setAttribute("class", "close");
+                closeBtn.setAttribute("data-dismiss", "alert");
+                closeBtn.innerHTML = "<span>&times;</span>";
+                alertbox.appendChild(closeBtn);
+
+                var eventTitle = document.createElement("div");
+                eventTitle.innerHTML = '<strong>New Event: '+result.event+'</strong>';
+                alertbox.appendChild(eventTitle);
+
+                var argsBox = document.createElement("textarea");
+                argsBox.setAttribute("class", "form-control");
+                argsBox.innerText= JSON.stringify(result.args);
+                alertbox.appendChild(argsBox);
+                document.getElementById("tokenEvents").appendChild(alertbox);
+
+            });
+        }).catch(function(e) {
+            console.log(e);
+            App.setStatus("Error getting balance; see log.");
+          });
+    }
 }
 
 window.addEventListener('load', function() {

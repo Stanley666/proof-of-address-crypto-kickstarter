@@ -26,39 +26,36 @@
         </div>
         <!-- Note that the .navbar-collapse and .collapse classes have been removed from the #navbar -->
         <div id="navbar">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Link</a></li>
+            <li class="active"><a href="#"><span id="accountCount"></span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
     
     <div class="container">
-
-      <div class="page-header">
-        <h1>Project Oblio Kickstarter </h1>
-        <p class="lead">Our cryptocurrency kickstarter will require each user to donate in amounts of 0.1 ETH and will only accept their donations if they include a valid name and address.</p>
-      </div>
       <div class="row">
         <div class="col-md-12" id="status"></div>
       </div>
       <div class="row">
           <div class="col-md-6">
-              <h3>Kickstarter <span id="accountCount" style="font-weight: 600;font-style: italic"></span></h3>
+            <div class="page-header">
+              <h1>Project Oblio Kickstarter </h1>
+              <p class="lead">Our cryptocurrency kickstarter will require each user to donate in amounts of 0.1 ETH and will only accept their donations if they include a valid name and address.</p>
+            </div>
               <h4>Wallet Address</h4>
-              <p id="current_wallet" style="font-style: italic"></p>
-              <p>The Kickstarter launches on November 5th, 2018 at 12:00 UTC. Any donations sent to the address before this time (or block number) will be returned to the user.</p>
-              <p>The user receives 20 OBL (name of token) for every 0.1 ETH that they donate. If they donate 0.1999 ETH, they only receive 20 OBL. </p>
-              <p>Each user has a separate "karma" score for every 0.1 ETH that they donate. So a user who donates 0.1 ETH has a karma score of 1. A user who donates 0.2 ETH has a karma score of 2. </p>
-              <p>The user must include the following in their transaction's data field: Name, Street Number, Street Address, Zip Code, and "terms". If "name" is not a string, the contract returns an error. If street number is not a number, the contract returns an error. If zip code is not at least 5 digits, the contract returns an error.. If any of these fields are missing, the contract returns the transaction and emits an error. If "terms" is not a "1" (indicating they accepted the terms and conditions), the contract emits an error. </p>
+              <p id="current_wallet"></p>
+              <hr/>
+              <h4>OBL Token Available</h4>
+              <p id="obl_token"></p>
+              <hr/>              
+              <h4>Project Oblio Crowdsales Contract</h4>
+              <p id="crowdsale_contract_address"></p>
+              <hr/>
 
-              <h3>Kickstarter Event</h3>
-              <p>In the event that an error is submitted, the transaction returns the money to the user. 6) Implement all other ERC-20 token contract func 7) The cryptokickstarter ends at 12:00 UTC on March 21st, 2019. Website: 8) The website allows a user to input their name, street number, street address, zip code, and a checkbox to indicate they've accepted the terms and conditions.</p>
+              <h3>Kickstarter Events</h3>
+              <hr/>
+              <div id="tokenEvents"></div>
           </div>
           <div class="col-md-6">
 
@@ -69,7 +66,6 @@
                     </h3>
                   </div>
                   <div class="panel-body">
-                      <p>The minimum amount to donate to the smart contract must be 0.1 ETH. Any less than this and the address must return the Ethereum to the user.</p>
                       <form>
                           <div class="form-group">
                             <label for="inputName">Enter Full name</label>
