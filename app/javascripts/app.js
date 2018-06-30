@@ -133,6 +133,12 @@ window.App = {
             console.log(e);
             App.setStatus("Error getting Get Account Count; see log.");
         });
+
+        TokenContract.deployed().then(function(instance){
+            return instance.balanceOf.call(instance.address);                  
+        }).then((balance) => {
+            document.getElementById("currentTokenBalance").innerHTML = balance / 1000000000000000000
+        })      
     },
 
     printImportantInfo: function(){

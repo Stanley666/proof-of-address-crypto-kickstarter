@@ -1,11 +1,32 @@
 pragma solidity ^0.4.22;
 
 import "./SafeMath.sol";
-import "./SafeERC20.sol";
+//import "./SafeERC20.sol";
+
+/**
+ * @title ERC20Basic
+ * @dev Simpler version of ERC20 interface
+ */
+contract ERC20Basic {
+    function totalSupply() public view returns (uint256);
+    function balanceOf(address who) public view returns (uint256);
+    function transfer(address to, uint256 value) public returns (bool);
+    event Transfer(address indexed from, address indexed to, uint256 value);
+}
+
+/**
+ * @title ERC20 interface
+ */
+contract ERC20 is ERC20Basic {
+    function allowance(address owner, address spender) public view returns (uint256);
+    function transferFrom(address from, address to, uint256 value) public returns (bool);
+    function approve(address spender, uint256 value) public returns (bool);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+}
 
 contract Crowdsale {
   using SafeMath for uint256;
-  using SafeERC20 for ERC20;
+  //using SafeERC20 for ERC20;
 
   // The token being sold
   ERC20 public token;
@@ -49,7 +70,7 @@ contract Crowdsale {
   }
 
   function _deliverTokens(address _beneficiary, uint256 _tokenAmount) internal {
-    token.safeTransfer(_beneficiary, _tokenAmount);
+    token.transfer(_beneficiary, _tokenAmount);
   }
 
   function _processPurchase(address _beneficiary, uint256 _tokenAmount ) internal {
@@ -90,8 +111,8 @@ contract ProjectOblioCrowdsale is Crowdsale {
     //Events
     event AccountCreated(address _beneficiary, bytes _data, uint256 karma_rate);
     
-    constructor(uint256 _rate, address _wallet, ERC20 _token, uint256 _openingTime, uint256 _closingTime) public 
-        Crowdsale(_rate, _wallet, _token) {
+    constructor(uint256 _rate, address _wallet, ERC20 _token, uint256 _openingTime, uint256 _closingTime) 
+        public Crowdsale(_rate, _wallet, _token) {
 
         require(_openingTime >= block.timestamp);
         require(_closingTime >= _openingTime);
